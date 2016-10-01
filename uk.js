@@ -122,7 +122,7 @@ function extractTravelPlan(data) {
 
     plan.fares.push({
       class: travelClass,
-      price: { cents: parsePrice(ticket.price), currency: 'GBP' },
+      price: [{ cents: parsePrice(ticket.price), currency: 'GBP' }],
     })
   }
   secondClass.map(ticket => mkticket(ticket, 2))
