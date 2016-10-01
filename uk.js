@@ -79,7 +79,6 @@ const searchHtmlScrapper = / id="timetable" data-module="CombinedMatrix" data-de
 // Get raw scrapping data
 // Return data conforming to the common travel plan format.
 function extractTravelPlan(data) {
-  console.log(JSON.stringify(data, null, 2))
   let tickets = data.fullJourneys[0].cheapestTickets
   let secondClass = tickets[0].tickets
   let firstClass = tickets[1].tickets
@@ -89,28 +88,46 @@ function extractTravelPlan(data) {
   let journeyFromId = []
   journeys.forEach(journey => journeyFromId[journey.id] = journey)
 
+  let plans = []
+  let getPlan = (from, to, departure, arrival) => {
+    return plans.find(plan =>
+      (plan.legs[0].from === from) && (plan.legs[0].to === to) &&
+      (plan.legs[0].departure === departure) && (plan.legs[0].arrival === arrival))
+  }
+
   let mkticket = (ticket, travelClass) => {
     let journey = journeyFromId[ticket.journeyId]
     let price = ticket.price  // "81.40"
     if (!journey || !price) { return }
-    let from = station.name(journey.departureName)
-    let to = station.name(journey.arrivalName)
-    return {
-      price: { cents: parsePrice(ticket.price), currency: 'GBP' },
-      travelClass: travelClass,
-      legs: [{
-        from: from ? from.id : journey.departureName,
-        to: to ? to.id : journey.arrivalName,
-        departure: parseTime(date, journey.departureTime),
-        arrival: parseTime(date, journey.arrivalTime),
-      }]
+    let origin = station.name(journey.departureName)
+    let destination = station.name(journey.arrivalName)
+
+    let from = origin ? origin.id : journey.departureName
+    let to = destination ? destination.id : journey.arrivalName
+    let departure = String(parseTime(date, journey.departureTime))
+    let arrival = String(parseTime(date, journey.arrivalTime))
+    let plan = getPlan(from, to, departure, arrival)
+    if (plan === undefined) {
+      plan = {
+        fares: [],
+        legs: [{
+          from: from,
+          to: to,
+          departure: departure,
+          arrival: arrival,
+        }],
+      }
+      plans.push(plan)
     }
+
+    plan.fares.push({
+      class: travelClass,
+      price: { cents: parsePrice(ticket.price), currency: 'GBP' },
+    })
   }
-  let secondClassPlan = secondClass.map(ticket => mkticket(ticket, 2))
-    .filter(plan => plan !== undefined)
-  let firstClassPlan = firstClass.map(ticket => mkticket(ticket, 1))
-    .filter(plan => plan !== undefined)
-  return secondClassPlan.concat(firstClassPlan)
+  secondClass.map(ticket => mkticket(ticket, 2))
+  firstClass.map(ticket => mkticket(ticket, 1))
+  return plans
 }
 
 // "81.40" → 8140
