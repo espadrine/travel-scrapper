@@ -8,7 +8,10 @@ exports.station = station
 // to: destination, as a string identifier too.
 // options:
 // - departure: local time of departure, as a Date object.
-// Returns a promise for a list of travel plans.
+// Returns a promise for a list of travel plans
+// { fares: [{price: [{cents, currency}], class, flexibility}],
+//   legs: [{from, to, departure, arrival}] }
+// from and to can either be a string identifier or {name, latitude, longitude}.
 exports.search =
 function search(from, to, options) {
   options = options || {}
@@ -20,7 +23,7 @@ function search(from, to, options) {
   if (origin.country === 'GB' && destination.country === 'GB') {
     return uk.search(from, to, options)
   } else if (stationEuCompatible(origin) && stationEuCompatible(destination)) {
-    return uk.search(from, to, options)
+    return eu.search(from, to, options)
   } else {
     return Promise.reject(new Error("This trip crosses the English Channel."))
   }

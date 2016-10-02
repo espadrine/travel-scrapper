@@ -110,18 +110,14 @@ function extractTravelPlan(data) {
     if (plan === undefined) {
       plan = {
         fares: [],
-        legs: [{
-          from: from,
-          to: to,
-          departure: departure,
-          arrival: arrival,
-        }],
+        legs: [{from, to, departure, arrival}],
       }
       plans.push(plan)
     }
 
     plan.fares.push({
       class: travelClass,
+      flexibility: 1,
       price: [{ cents: parsePrice(ticket.price), currency: 'GBP' }],
     })
   }
