@@ -1,0 +1,26 @@
+{
+  "name": "travel-scrapper",
+  "version": "0.1.1",
+  "description": "Scrap travel data. Search for journeys.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/espadrine/travel-scrapper.git"
+  },
+  "keywords": [
+    "train",
+    "search"
+  ],
+  "author": "Thaddée Tyl",
+  "license": "MIT",
+  "dependencies": {
+    "request": "2.75.0"
+  },
+  "bugs": {
+    "url": "https://github.com/espadrine/travel-scrapper/issues"
+  },
+  "homepage": "https://github.com/espadrine/travel-scrapper#readme"
+}
