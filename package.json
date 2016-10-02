@@ -1,6 +1,6 @@
 {
   "name": "travel-scrapper",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Scrap travel data. Search for journeys.",
   "main": "main.js",
   "scripts": {
@@ -19,6 +19,13 @@
   "dependencies": {
     "request": "2.75.0"
   },
+  "files": [
+    "main.js",
+    "station.js",
+    "data/stations.json",
+    "eu.js",
+    "uk.js"
+  ],
   "bugs": {
     "url": "https://github.com/espadrine/travel-scrapper/issues"
   },
