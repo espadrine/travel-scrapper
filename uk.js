@@ -80,6 +80,7 @@ const searchHtmlScrapper = / id="timetable" data-module="CombinedMatrix" data-de
 // Return data conforming to the common travel plan format.
 function extractTravelPlan(data) {
   let tickets = data.fullJourneys[0].cheapestTickets
+  if (!tickets || tickets.length === 0) { return [] }
   let secondClass = tickets[0].tickets
   let firstClass = tickets[1].tickets
   let journeys = data.fullJourneys[0].journeys
