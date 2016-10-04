@@ -34,12 +34,23 @@ function search(from, to, options) {
         reject(err || new Error('Accessing EU information failed during search'))
         return
       }
+      if (json.error) {
+        reject(err || new Error('Searching for EU information: ' + json.error))
+        return
+      }
       if (json.errors && json.errors.length > 0) {
         reject(err || new Error('Searching for EU information: ' +
               json.errors.join(', ')))
         return
       }
-      resolve(extractTravelPlan(json))
+      let travelPlan
+      try {
+        travelPlan = extractTravelPlan(json)
+      } catch(e) {
+        reject(err)
+        return
+      }
+      resolve(travelPlan)
     })
   })
 }

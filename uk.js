@@ -59,14 +59,14 @@ function search(from, to, options) {
           reject(new Error('Extracting UK information failed during search'))
           return
         }
-        let data
+        let data, travelPlan
         try {
           data = JSON.parse(scrapped[1].replace(/\\/g, '\\'))
+          travelPlan = extractTravelPlan(data)
         } catch(e) {
           reject(e)
           return
         }
-        let travelPlan = extractTravelPlan(data)
         resolve(travelPlan)
       })
     })

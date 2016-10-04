@@ -7,5 +7,6 @@ stations.forEach(station => {
   stationFromName.set(station.name, station)
 })
 
-exports.id = function id(id) { return stationFromId.get(id) }
-exports.name = function name(name) { return stationFromName.get(name) }
+module.exports = stations
+module.exports.id = function id(id) { return stationFromId.get(id) }
+module.exports.name = function name(name) { return stationFromName.get(name) }
