@@ -1,6 +1,6 @@
 {
   "name": "travel-scrapper",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Scrap travel data. Search for journeys.",
   "main": "main.js",
   "scripts": {
