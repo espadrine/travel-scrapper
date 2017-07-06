@@ -30,6 +30,7 @@ function search(from, to, options) {
     if (origin.country === 'GB') {
       return uk.search(from, London, options)
       .then(ukTravelPlan => {
+        if (ukTravelPlan[0] === undefined) { return Promise.resolve([]) }
         let legs = ukTravelPlan[0].legs
         options.departure = new Date(legs[legs.length - 1].arrival)
         return eu.search(London, to, options)
@@ -38,6 +39,7 @@ function search(from, to, options) {
     } else {  // Going from europe to the UK.
       return eu.search(from, London, options)
       .then(euTravelPlan => {
+        if (ukTravelPlan[0] === undefined) { return Promise.resolve([]) }
         let legs = euTravelPlan[0].legs
         options.departure = new Date(legs[legs.length - 1].arrival)
         return uk.search(London, to, options)
